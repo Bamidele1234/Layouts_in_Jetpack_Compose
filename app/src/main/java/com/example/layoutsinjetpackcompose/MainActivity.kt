@@ -3,13 +3,17 @@ package com.example.layoutsinjetpackcompose
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.example.layoutsinjetpackcompose.ui.theme.LayoutsInJetpackComposeTheme
 
 class MainActivity : ComponentActivity() {
@@ -17,27 +21,87 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             LayoutsInJetpackComposeTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    Greeting("Android")
-                }
+                LayoutsCodelab()
             }
         }
     }
 }
 
 @Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
+fun LayoutsCodelab(){
+    Scaffold (
+        topBar = {
+            TopAppBar (
+                title = {
+                    Text(text = "LayoutsCodelab")
+                },
+                actions = {
+                    IconButton(onClick = {/* Some action */}){
+                        Icon(Icons.Filled.Favorite, contentDescription = null)
+                    }
+                }
+            )
+        }
+    ) { innerPadding ->
+        BodyContent(
+            Modifier
+                .padding(innerPadding)
+                .padding(8.dp))
+    }
 }
 
-@Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
+fun ImageListItem(index: Int){
+    Row(verticalAlignment = Alignment.CenterVertically){
+
+        Spacer(Modifier.width(10.dp))
+        Text("Item #$index", style = MaterialTheme.typography.subtitle1)
+
+    }
+}
+
+@Composable
+fun BodyContent(modifier : Modifier = Modifier){
+    Column(modifier = Modifier) {
+        Text(text = "Hi there")
+        Text(text = "Thanks for going through the Layouts codelab")
+
+    }
+}
+
+@Composable
+fun SimpleList(){
+    // We save the scrolling position with this state that can also
+    // be used to programmatically scroll the list
+    val scrollState = rememberLazyListState()
+
+    LazyColumn(state = scrollState){
+        items(100) {
+            ImageListItem(it)
+        }
+    }
+}
+
+@Preview(
+    widthDp = 393,
+    heightDp = 786,
+    name = "Preview on my device"
+)
+@Composable
+fun LayoutsCodelabPreview(){
     LayoutsInJetpackComposeTheme {
-        Greeting("Android")
+        LayoutsCodelab()
+    }
+}
+
+@Preview(
+    widthDp = 350,
+    heightDp = 350,
+    name = "ScrollableList"
+)
+@Composable
+fun ListPreview(){
+    LayoutsInJetpackComposeTheme {
+        SimpleList()
     }
 }
