@@ -293,7 +293,7 @@ fun Chip(modifier: Modifier = Modifier, text: String) {
     }
 }
 
-@Preview(widthDp = 393, heightDp = 786, name = "Pixel 3 preview ")
+@Preview(widthDp = 393, heightDp = 786, name = "My device")
 @Composable
 fun LayoutsCodelabPreview(){
     LayoutsInJetpackComposeTheme {
