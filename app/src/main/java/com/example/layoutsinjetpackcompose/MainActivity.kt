@@ -3,9 +3,7 @@ package com.example.layoutsinjetpackcompose
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -34,7 +32,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             LayoutsInJetpackComposeTheme {
-                LayoutsCodelab()
+                BodyContent()
             }
         }
     }
@@ -117,9 +115,11 @@ fun ScrollingList(){
 
 @Composable
 fun BodyContent(modifier : Modifier = Modifier){
-    StaggeredGrid(modifier = modifier) {
-        for ( topic in  topics) {
-            Chip(modifier = Modifier.padding(8.dp), text = topic)
+    Row(modifier = modifier.horizontalScroll(rememberScrollState())) {
+        StaggeredGrid(modifier = modifier) {
+            for (topic in topics) {
+                Chip(modifier = Modifier.padding(8.dp), text = topic)
+            }
         }
     }
 }
@@ -293,7 +293,7 @@ fun Chip(modifier: Modifier = Modifier, text: String) {
     }
 }
 
-@Preview(widthDp = 393, heightDp = 786, name = "My device")
+@Preview
 @Composable
 fun LayoutsCodelabPreview(){
     LayoutsInJetpackComposeTheme {
