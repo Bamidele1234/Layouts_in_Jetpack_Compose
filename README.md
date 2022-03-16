@@ -7,6 +7,7 @@ Learning more about compose layout
 - How to create a custom layout 
 - When intrinsics are needed
 - Introduction to Slot APIs
+- Using constrain layouts 
 
 ## Note 
 **This was done in completion of Activity 5: Layouts in Jetpack Compose**

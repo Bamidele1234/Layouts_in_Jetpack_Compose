@@ -16,6 +16,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.AlignmentLine
 import androidx.compose.ui.layout.FirstBaseline
 import androidx.compose.ui.layout.Layout
@@ -23,16 +24,18 @@ import androidx.compose.ui.layout.layout
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
 import coil.compose.rememberImagePainter
 import com.example.layoutsinjetpackcompose.ui.theme.LayoutsInJetpackComposeTheme
 import kotlinx.coroutines.launch
+import kotlin.math.max
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             LayoutsInJetpackComposeTheme {
-                BodyContent()
+                ScrollingList()
             }
         }
     }
@@ -115,7 +118,12 @@ fun ScrollingList(){
 
 @Composable
 fun BodyContent(modifier : Modifier = Modifier){
-    Row(modifier = modifier.horizontalScroll(rememberScrollState())) {
+    Row(
+        modifier = modifier
+            .background(color = Color.LightGray, shape = RectangleShape)
+            .size(200.dp)
+            .padding(16.dp)
+            .horizontalScroll(rememberScrollState())) {
         StaggeredGrid(modifier = modifier) {
             for (topic in topics) {
                 Chip(modifier = Modifier.padding(8.dp), text = topic)
@@ -199,7 +207,6 @@ fun Modifier.firstBaselineToTop(
     }
         )
 
-
 /**
  * My custom staggered grid
  */
@@ -228,7 +235,7 @@ fun StaggeredGrid (
             // Track the width and max height of each row
             val row = index % rows
             rowWidths[row] += placeable.width
-            rowHeights[row] = Math.max(rowHeights[row], placeable.height)
+            rowHeights[row] = max(rowHeights[row], placeable.height)
 
             placeable
         }
@@ -293,11 +300,39 @@ fun Chip(modifier: Modifier = Modifier, text: String) {
     }
 }
 
+@Composable
+fun ConstraintLayoutContent(){
+    ConstraintLayout {
+
+        // Create references for the composables to constrain
+        val (button, text) = createRefs()
+
+        Button(
+            onClick = { /* Do something */},
+            // Assign references "button" to the Button composable
+            // and constrain it to the top of the constrainLayout
+            modifier = Modifier.constrainAs(button) {
+                top.linkTo(parent.top, margin = 16.dp)
+            }
+        ) {
+            Text("Button")
+        }
+
+        // Assign reference "text" to the Text composable
+        // and constrain it to the bottom of the Button composable
+        Text("Text", Modifier.constrainAs(text) {
+            top.linkTo(button.bottom, margin = 16.dp)
+            centerHorizontallyTo(parent)
+        })
+    }
+}
+
+
 @Preview
 @Composable
 fun LayoutsCodelabPreview(){
     LayoutsInJetpackComposeTheme {
-        BodyContent()
+        ConstraintLayoutContent()
     }
 }
 
