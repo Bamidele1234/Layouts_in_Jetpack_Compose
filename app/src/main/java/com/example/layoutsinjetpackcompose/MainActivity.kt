@@ -327,6 +327,42 @@ fun ConstraintLayoutContent(){
     }
 }
 
+@Composable
+fun AnotherConstraintLayoutContent(){
+    ConstraintLayout {
+        // Create references for the three composables
+        // in the ConstrainLayout's body
+        val (button1, button2, text) = createRefs()
+
+        Button(
+            onClick = { /* Do something*/},
+            modifier = Modifier.constrainAs(button1) {
+                top.linkTo(parent.top, margin = 16.dp)
+            }
+        ) {
+            Text("This is a button")
+        }
+
+        Text("Bamidele made this button", Modifier.constrainAs(text){
+            top.linkTo(button1.bottom, margin = 16.dp)
+            centerAround(button1.end)
+        })
+
+        val barrier = createEndBarrier(button1, text)
+
+        Button(
+            onClick = { /* Do something */},
+            modifier = Modifier.constrainAs(button2) {
+                top.linkTo(parent.top, margin = 16.dp)
+                //start.linkTo(button1.end, margin = 10.dp)
+                start.linkTo(barrier)
+            }
+        ) {
+            Text("This is another button")
+        }
+    }
+}
+
 
 @Preview
 @Composable
