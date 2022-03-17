@@ -25,6 +25,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
+import androidx.constraintlayout.compose.atLeast
 import coil.compose.rememberImagePainter
 import com.example.layoutsinjetpackcompose.ui.theme.LayoutsInJetpackComposeTheme
 import kotlinx.coroutines.launch
@@ -121,8 +123,8 @@ fun BodyContent(modifier : Modifier = Modifier){
     Row(
         modifier = modifier
             .background(color = Color.LightGray, shape = RectangleShape)
-            .size(200.dp)
-            .padding(16.dp)
+            //.size(200.dp)
+            //.padding(16.dp)
             .horizontalScroll(rememberScrollState())) {
         StaggeredGrid(modifier = modifier) {
             for (topic in topics) {
@@ -373,16 +375,44 @@ fun LargeConstraintLayout(){
             "This is a very very very very very very very long text",
             Modifier.constrainAs(text) {
                 linkTo(start = guideline, end = parent.end)
+                width = Dimension.preferredWrapContent.atLeast(100.dp)
             }
         )
     }
 }
 
-@Preview
+
+
+@Composable
+fun TwoTexts(modifier: Modifier = Modifier, text1: String, text2: String) {
+    Row(modifier = modifier) {
+        Text(
+            modifier = Modifier
+                .weight(1f)
+                .padding(start = 4.dp)
+                .wrapContentWidth(Alignment.Start),
+            text = text1
+        )
+        Divider(color = Color.Black, modifier = Modifier.fillMaxHeight().width(1.dp))
+        Text(
+            modifier = Modifier
+                .weight(1f)
+                .padding(end = 4.dp)
+                .wrapContentWidth(Alignment.End),
+            text = text2
+        )
+    }
+}
+
+@Preview(
+    name = "My Composable Preview"
+)
 @Composable
 fun LayoutsCodelabPreview(){
     LayoutsInJetpackComposeTheme {
-        ConstraintLayoutContent()
+        Surface {
+         TwoTexts(text1 = "Bamidele", text2 ="Ajewole")
+        }
     }
 }
 
